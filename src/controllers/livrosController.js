@@ -6,6 +6,7 @@ const listarLivros = (req, res) => {
 
 const adicionarLivro = (req, res) => {
   const { titulo, autor, genero, anoPublicacao, quantidade, ISBN } = req.body;
+  const anoPublicacaoNumerico = Number(anoPublicacao);
 
   if (!titulo || !autor) {
     return res.status(400).json({
@@ -13,12 +14,18 @@ const adicionarLivro = (req, res) => {
     })
   };
 
+  if (!Number.isInteger(anoPublicacaoNumerico)) {
+    return res.status(400).json({
+      erro: "Atenção: o ano de publicação deve ser um número inteiro válido.",
+    });
+  }
+
   const novoLivro = {
     id: livros.length + 1,
     titulo,
     autor,
     genero,
-    anoPublicacao,
+    anoPublicacao: anoPublicacaoNumerico,
     quantidade,
     ISBN
   };
