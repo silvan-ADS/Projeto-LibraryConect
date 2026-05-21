@@ -1,10 +1,18 @@
-const livros = require("../models/livroModel");
+const supabase = require("../config/supabase");
 
-const listarLivros = (req, res) => {
-    res.json(livros)
+const listarLivros = async (req, res) => {
+  const { data, error } = await supabase.from("livros").select("*");
+
+  if (error) {
+    return res.status(500).json({
+      erro: error.message,
+    })
+  };
+
+  res.json(data);
 };
 
-const adicionarLivro = (req, res) => {
+const adicionarLivro = async (req, res) => {
   const { titulo, autor, genero, anoPublicacao, quantidade, ISBN } = req.body;
   const anoPublicacaoNumerico = Number(anoPublicacao);
 
@@ -21,24 +29,32 @@ const adicionarLivro = (req, res) => {
   }
 
   const novoLivro = {
-    id: livros.length + 1,
     titulo,
     autor,
     genero,
     anoPublicacao: anoPublicacaoNumerico,
     quantidade,
-    ISBN
+    ISBN,
   };
 
-  livros.push(novoLivro);
+  const { data, error } = await supabase
+    .from("livros")
+    .insert([novoLivro])
+    .select();
+
+  if (error) {
+    return res.status(500).json({
+      erro: error.message,
+    })
+  };
 
   res.status(201).json({
     mensagem: "Livro adicionado com sucesso!",
-    livroAdicionado: novoLivro,
-  })
+    livroAdicionado: data,
+  });
 };
 
 module.exports = {
   adicionarLivro,
-  listarLivros
+  listarLivros,
 };

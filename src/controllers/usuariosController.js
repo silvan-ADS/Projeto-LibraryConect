@@ -1,26 +1,58 @@
-const usuarios = require("../models/usuarioModel");
+const supabase = require("../config/supabase");
 
-const listarUsuarios = (req, res) => {
-    res.json(usuarios)
+const adicionarUsuarios = async (req, res) => {
+    const{data, error} = await supabase
+        .from("usuarios")
+        .select("*");
+
+    if(error) {
+        return res.status(500).json({
+            erro: error.message
+        });
+    }
+
+    res.json(data);
 };
 
-const criarUsuario = (req, res) => {
-    const {nome, email, telefone, matricula} = req.body
+const criarUsuario = async (req, res) => {
+    const {
+        nome, 
+        email, 
+        telefone, 
+        matricula
+    } = req.body;
+
+    if(!nome || !email) {
+        return res.status(400).json({
+            erro: "Nome e email são obrigatórios!"
+        })
+    };
 
     const novoUsuario = {
-        id: usuarios.length + 1,
         nome,
         email,
         telefone,
         matricula
     }
 
-    usuarios.push(novoUsuario)
+    const {data, error} = await supabase
+        .from("usuarios")
+        .insert([novoUsuario])
+        .select();
 
-    res.status(201).json(novoUsuario)
-}
+    if (error) {
+        return res.status(500).json({
+            erro: error.message
+        });
+    };
+
+    res.status(201).json({
+        mensagem: "Úsuario cadastrado com sucesso!",
+        usuario: data
+    });
+};
 
 module.exports = {
     criarUsuario,
-    listarUsuarios
+    adicionarUsuarios
 }
