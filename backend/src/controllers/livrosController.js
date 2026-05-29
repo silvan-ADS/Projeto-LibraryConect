@@ -22,19 +22,73 @@ const adicionarLivro = async (req, res) => {
     })
   };
 
-  if (!Number.isInteger(anoPublicacaoNumerico)) {
-    return res.status(400).json({
-      erro: "Atenção: o ano de publicação deve ser um número inteiro válido.",
-    });
+  let quantidadeFinal = 0;
+
+  //Validação de quantidade ( >=0 e número inteiro)
+  if (quantidade !== undefined && quantidade !== null) {
+    quantidadeFinal = Number(quantidade);
+
+    if (isNaN(quantidadeFinal) || quantidadeFinal < 0) {
+      return res.status(400).json({
+        erro: "Atenção: A quantidade deve ser um número inteiro positivo!",
+      });
+    }
   }
 
+  let anoPublicacaoFinal = anoPublicacao;
+
+  //Validação de ano de publicação (não pode ser no futuro)
+  if (anoPublicacao !== undefined && anoPublicacao !== null) {
+    anoPublicacaoFinal = Number(anoPublicacao);
+    const anoAtual = new Date().getFullYear();
+
+    if (isNaN(anoPublicacaoFinal) || anoPublicacaoFinal > anoAtual) {
+      return res.status(400).json({
+        erro: "Atenção: O ano de publicação não pode ser no futuro!",
+      });
+    }
+  }
+
+  let isbnLimpo = null;
+
+  //Validação e Verificação de Duplicidade do ISBN
+  if (ISBN) {
+    isbnLimpo = ISBN.replace(/-/g, "");
+
+    if (isbnLimpo.length !== 10 && isbnLimpo.length !== 13) {
+      return res.status(400).json({
+        erro: "Atenção: O ISBN deve conter 10 ou 13 dígitos (sem hífens)!",
+      });
+    }
+
+    //busca no banco de dados se já existe um livro com o mesmo ISBN
+    const { data: livrosExistentes, error: erroBusca } = await supabase
+      .from("livros")
+      .select("id")
+      .eq("ISBN", isbnLimpo)
+      .maybeSingle();
+
+    if (erroBusca) {
+      return res.status(500).json({
+        erro: erroBusca.message,
+      });
+    }
+
+    if (livrosExistentes) {
+      return res.status(400).json({
+        erro: "Atenção: Já existe um livro cadastrado com este ISBN!",
+      });
+    }
+  }
+
+  //Montagem do objeto final padronizado para inserção no banco de dados
   const novoLivro = {
     titulo,
     autor,
-    genero,
-    anoPublicacao: anoPublicacaoNumerico,
-    quantidade,
-    ISBN,
+    genero: genero || "sem classificação", // Define um valor padrão para gênero vazio
+    anoPublicacao: anoPublicacaoFinal,
+    quantidade: quantidadeFinal,
+    ISBN: isbnLimpo, // Define ISBN como null se não for fornecido
   };
 
   const { data, error } = await supabase
