@@ -45,7 +45,6 @@ body {
 
   .input-group {
     position: relative;
-
     display: flex;
     align-items: center;
     margin-bottom: 1.4rem;
@@ -53,11 +52,8 @@ body {
     .input-group > svg {
       position: absolute;
       height: 50px;
-
       left: 1rem;
-
       color: #7a87b8;
-
       font-size: 1.4rem;
     }
 
@@ -71,28 +67,19 @@ body {
       box-sizing: border-box;
       color: #2b2b2b;
       transition: 0.2s;
-
+      
       .toggle-password {
         position: absolute;
-
         right: 1rem;
-
         background: transparent;
-
         border: none;
-
         width: auto;
-
         padding: 0;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         cursor: pointer;
-
         color: #7a87b8;
-
         font-size: 1.4rem;
       }
 
