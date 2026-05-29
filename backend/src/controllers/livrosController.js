@@ -14,6 +14,7 @@ const listarLivros = async (req, res) => {
 
 const adicionarLivro = async (req, res) => {
   const { titulo, autor, genero, anoPublicacao, quantidade, ISBN } = req.body;
+  const anoPublicacaoNumerico = Number(anoPublicacao);
 
   if (!titulo || !autor) {
     return res.status(400).json({
