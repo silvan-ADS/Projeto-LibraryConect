@@ -1,66 +1,160 @@
 body {
-  font-family: sans-serif;
-  background-color: #f5f5f5;
+  font-family: Arial, Helvetica, sans-serif;
   display: flex;
-  color: #fff;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 2rem;
+  overflow: hidden;
+  background-color: #0037d6;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.14) 18%,
+
+    rgba(255, 255, 255, 0.1) 18%,
+    rgba(255, 255, 255, 0.1) 32%,
+
+    rgba(255, 255, 255, 0.06) 32%,
+    rgba(255, 255, 255, 0.06) 46%,
+
+    rgba(255, 255, 255, 0.03) 46%,
+    rgba(255, 255, 255, 0.03) 60%,
+    transparent 60%
+  );
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80rem 80rem;
 }
 
 .login-container {
-  width: 100%;
-  max-width: 40rem;
-  background-color: #111222;
-  padding: 2.5rem;
-  border-radius: 0.8rem;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  width: 45vw;
+  max-width: 50rem;
+  min-width: 30rem;
+  padding: 3vh 3vw;
+  border-radius: 1.2rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.15);
 
   h1 {
-    margin-bottom: 2rem;
-    font-size: 2rem;
     text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: clamp(2rem, 3vw, 3.2rem);
+    color: #1234a6;
+    font-weight: 700;
   }
 
-  input {
-    width: 100%;
-    padding: 0.9rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.4rem;
+  .input-group {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.4rem;
+
+    .input-group > svg {
+      position: absolute;
+      height: 50px;
+
+      left: 1rem;
+
+      color: #7a87b8;
+
+      font-size: 1.4rem;
+    }
+
+    input {
+      width: 100%;
+      height: 5vh;
+      border: 0.1rem solid #d8deee;
+      border-radius: 0.7rem;
+      font-size: 1rem;
+      outline: none;
+      box-sizing: border-box;
+      color: #2b2b2b;
+      transition: 0.2s;
+
+      .toggle-password {
+        position: absolute;
+
+        right: 1rem;
+
+        background: transparent;
+
+        border: none;
+
+        width: auto;
+
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        cursor: pointer;
+
+        color: #7a87b8;
+
+        font-size: 1.4rem;
+      }
+
+      .toggle-password:hover {
+        color: #0d47ff;
+      }
+    }
+
+    input:focus {
+      border-color: #2b59ff;
+      box-shadow: 0 0 0 0.2rem rgba(43, 89, 255, 0.1);
+    }
   }
 
-  button {
+  .btn-login {
     width: 100%;
-    padding: 0.9rem;
-    margin-bottom: 0.8rem;
-    font-size: 1rem;
-    color: #000;
+    padding: 1.5vh;
+    margin-top: 0.5rem;
     border: none;
-    border-radius: 0.4rem;
+    border-radius: 0.7rem;
+    background: #0d47ff;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
   }
 
-  button.entrar {
-    background-color: #149;
-    color: #fff
-  }
-  button.entrar:hover {
-    background-color: rgb(34, 91, 190);
+  .btn-cadastro {
+    width: 100%;
+    padding: 1.5vh;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 0.7rem;
+    background: #edf2ff;
+    color: #0d47ff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
   }
 
+  .btn-login:hover {
+    background: #0037d6;
+  }
 
-  #mensagemErro {
-    color: red;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+  .btn-cadastro:hover {
+    background: #c2c9da;
+  }
+
+  .mensagem {
+    margin-top: 1rem;
     text-align: center;
+    font-size: 0.95rem;
+    font-weight: 500;
   }
-}
 
-button:hover {
-  background-color: red;
+  .erro {
+    color: #dc2626;
+  }
+
+  .sucesso {
+    color: #16a34a;
+  }
 }

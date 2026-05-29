@@ -1,5 +1,14 @@
+:root {
+  --bg-principal: #0b3bb7;
+  --azul-principal: #276dd5;
+  --bg-secundario: #d7e9ff;
+  --vermelho: #da1c1f;
+  --bg-vermelho: #fbe4e5;
+}
+
 * {
   margin: 0;
   padding: 0;
+  font-family: "Inter", sans-serif;
   box-sizing: border-box;
 }
