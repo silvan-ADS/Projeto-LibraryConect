@@ -108,7 +108,52 @@ const adicionarLivro = async (req, res) => {
   });
 };
 
+const deletarLivro = async (req, res) => {
+  const { id } = req.params;
+  const livroId = Number(id);
+
+  if (!id || Number.isNaN(livroId)) {
+    return res.status(400).json({
+      erro: "Atenção: ID do livro inválido.",
+    });
+  }
+
+  const { data: livroExistente, error: erroBusca } = await supabase
+    .from("livros")
+    .select("id")
+    .eq("id", livroId)
+    .maybeSingle();
+
+  if (erroBusca) {
+    return res.status(500).json({
+      erro: erroBusca.message,
+    });
+  }
+
+  if (!livroExistente) {
+    return res.status(404).json({
+      erro: "Livro não encontrado.",
+    });
+  }
+
+  const { error } = await supabase
+    .from("livros")
+    .delete()
+    .eq("id", livroId);
+
+  if (error) {
+    return res.status(500).json({
+      erro: error.message,
+    });
+  }
+
+  res.json({
+    mensagem: "Livro excluído com sucesso!",
+  });
+};
+
 module.exports = {
   adicionarLivro,
   listarLivros,
+  deletarLivro,
 };

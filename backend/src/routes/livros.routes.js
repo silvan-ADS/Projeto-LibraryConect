@@ -4,10 +4,12 @@ const router = express.Router();
 
 const {
   listarLivros,
-  adicionarLivro
+  adicionarLivro,
+  deletarLivro,
 } = require("../controllers/livrosController");
 
 router.post("/", adicionarLivro);
 router.get("/", listarLivros);
+router.delete("/:id", deletarLivro);
 
 module.exports = router;
