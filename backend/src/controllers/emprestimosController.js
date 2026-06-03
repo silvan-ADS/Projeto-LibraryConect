@@ -1,7 +1,7 @@
 const supabase = require("../config/supabase");
 
 const listarEmprestimos = async (req, res) => {
-  const { data, error } = await supabase.from("emprestimos").select("*");
+  const { data, error } = await supabase.from("emprestimos").select("*").order("id", { ascending: true });
   
   if (error) {
     return res.status(500).json({
@@ -82,7 +82,41 @@ const criarEmprestimo = async (req, res) => {
   });
 };
 
+  // Atualizar empréstimo (devolução)
+const atualizarEmprestimo = async (req, res) => {
+  const { id } = req.params;
+  const { data_devolucao, status } = req.body;
+
+  const { data, error } = await supabase
+    .from("emprestimos")
+    .update({
+      data_devolucao,
+      status
+    })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    return res.status(500).json({
+      erro: error.message
+    });
+  }
+
+  if (data.length === 0) {
+    return res.status(404).json({
+      erro: "Empréstimo não encontrado"
+    });
+  }
+
+  res.status(200).json({
+    mensagem: "Empréstimo atualizado com sucesso",
+    emprestimo: data
+  });
+};
+
+
 module.exports = {
   criarEmprestimo,
   listarEmprestimos,
+  atualizarEmprestimo
 };
