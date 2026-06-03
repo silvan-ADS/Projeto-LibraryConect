@@ -1,7 +1,7 @@
 const supabase = require("../config/supabase");
 
 const listarEmprestimos = async (req, res) => {
-  const { data, error } = await supabase.from("emprestimos").select("*");
+  const { data, error } = await supabase.from("emprestimos").select("*").order("id", { ascending: true });
   
   if (error) {
     return res.status(500).json({
