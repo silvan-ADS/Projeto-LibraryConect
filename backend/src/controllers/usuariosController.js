@@ -52,6 +52,39 @@ const criarUsuario = async (req, res) => {
     });
 };
 
+const atualizarUsuario = async (req, res) => {
+    const { id } = req.params;
+
+    const {
+        nome,
+        email,
+        telefone,
+        matricula
+    } = req.body;
+
+    const { data, error } = await supabase
+        .from("usuarios")
+        .update({
+            nome,
+            email,
+            telefone,
+            matricula
+        })
+        .eq("id", id)
+        .select();
+
+    if (error) {
+        return res.status(500).json({
+            erro: error.message
+        });
+    }
+
+    res.json({
+        mensagem: "Usuário atualizado com sucesso!",
+        usuario: data
+    });
+};
+
 const deletarUsuario = async (req, res) => {
     const { id } = req.params;
     const usuarioId = Number(id);
@@ -99,5 +132,6 @@ const deletarUsuario = async (req, res) => {
 module.exports = {
     criarUsuario,
     adicionarUsuarios,
+    atualizarUsuario,
     deletarUsuario
 }
