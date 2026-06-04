@@ -5,7 +5,7 @@ function Sidebar() {
     <div
       className="bg-primary text-white p-4"
       style={{
-        width: "220px",
+        width: "240px",
         minHeight: "100vh",
       }}
     >
