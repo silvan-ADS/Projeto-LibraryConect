@@ -3,9 +3,11 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import Sidebar from "../components/Sidebar";
 import "../styles/sidebar.css";
 import "../styles/usuarios.css";
+import "../styles/modal.css";
 
 function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
     async function buscarUsuarios() {
@@ -25,8 +27,45 @@ function Usuarios() {
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1 className="fw-bold">Usuários</h1>
 
-          <button className="btn btn-primary btn-lg">Novo Usuário</button>
+          <button
+            className="btn btn-primary btn-lg"
+            onClick={() => setMostrarModal(true)}
+          >
+            Novo Usuário
+          </button>
         </div>
+
+        {mostrarModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3 className="h1">Novo Usuário</h3>
+              <input
+                className="p-2 border-2 br-2 rounded-3"
+                type="text"
+                placeholder="Nome"
+              />
+              <input
+                className="p-2 border-2 rounded-3"
+                type="text"
+                placeholder="Matrícula"
+              />
+              <input
+                className="p-2 border-2 rounded-3"
+                type="email"
+                placeholder="Email"
+              />
+              <div className="d-flex justify-content-end gap-2 mt-3">
+                <button
+                  className="btn btn-secondary btn-lg"
+                  onClick={() => setMostrarModal(false)}
+                >
+                  Cancelar
+                </button>
+                <button className="btn btn-primary btn-lg">Salvar</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="card shadow-sm">
           <div className="card-body">
