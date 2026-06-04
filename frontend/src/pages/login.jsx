@@ -1,18 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../services/supabase";
 import "../styles/login.css";
-import { HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
-import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import {
+  HiOutlineMail,
+  HiOutlineLockClosed,
+  HiOutlineEye,
+  HiOutlineEyeOff,
+} from "react-icons/hi";
 
 function Login() {
   const [email, setEmail] = useState("");
-
   const [senha, setSenha] = useState("");
-
   const [mensagem, setMensagem] = useState("");
 
   const [tipoMensagem, setTipoMensagem] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const logado = localStorage.getItem("logado");
+    if (logado) {
+      navigate("/usuarios");
+    }
+  }, [navigate]);
 
   async function fazerLogin() {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -31,11 +43,14 @@ function Login() {
       return;
     }
 
-    setMensagem("Login realizado com sucesso!");
+    localStorage.setItem("logado", "true");
 
+    localStorage.setItem("usuario", JSON.stringify(data.user));
+
+    setMensagem("Login realizado com sucesso!");
     setTipoMensagem("sucesso");
 
-    console.log(data);
+    navigate("/usuarios");
   }
 
   async function cadastrarUsuario() {
@@ -57,52 +72,47 @@ function Login() {
       return;
     }
 
-    setMensagem("Usuário cadastrado com sucesso!");
+    setMensagem("Cadastro realizado. Verifique seu e-mail caso seja necessária confirmação.");
     setTipoMensagem("sucesso");
 
     console.log(data);
   }
 
   return (
-    <div className="login-container">
-      <h1>Acesso ao Sistema</h1>
-
-      <div className="input-group">
-        <HiOutlineMail />
-
-        <input
-          type="email"
-          placeholder="Digite seu email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-
-      <div className="input-group">
+    <div className="login-page">
+      <div className="login-container">
+        <h1>Acesso ao Sistema</h1>
+        <div className="input-group">
+          <HiOutlineMail />
+          <input
+            type="email"
+            placeholder="Digite seu email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="input-group">
           <HiOutlineLockClosed />
-
-        <input
-          type={mostrarSenha ? "text" : "password"}
-          placeholder="Digite sua senha"
-          onChange={(e) => setSenha(e.target.value)}
-        />
-        <button
-          type="button"
-          className="toggle-password"
-          onClick={() => setMostrarSenha(!mostrarSenha)}
-        >
-          {mostrarSenha ? <HiOutlineEyeOff /> : <HiOutlineEye />}
+          <input
+            type={mostrarSenha ? "text" : "password"}
+            placeholder="Digite sua senha"
+            onChange={(e) => setSenha(e.target.value)}
+          />
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={() => setMostrarSenha(!mostrarSenha)}
+          >
+            {mostrarSenha ? <HiOutlineEyeOff /> : <HiOutlineEye />}
+          </button>
+        </div>
+        <button className="btn-login" onClick={fazerLogin}>
+          Entrar
         </button>
+        <button className="btn-cadastro" onClick={cadastrarUsuario}>
+          Cadastrar
+        </button>
+        {mensagem && <p className={`mensagem ${tipoMensagem}`}>{mensagem}</p>}
       </div>
-
-      <button className="btn-login" onClick={fazerLogin}>
-        Entrar
-      </button>
-
-      <button className="btn-cadastro" onClick={cadastrarUsuario}>
-        Cadastrar
-      </button>
-
-      {mensagem && <p className={`mensagem ${tipoMensagem}`}>{mensagem}</p>}
     </div>
   );
 }
