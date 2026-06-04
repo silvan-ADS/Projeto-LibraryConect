@@ -113,10 +113,77 @@ const atualizarEmprestimo = async (req, res) => {
     emprestimo: data
   });
 };
+  const deletarEmprestimo = async (req, res) => {
+  const { id } = req.params;
+
+  // Validação do ID
+  if (!id || isNaN(id)) {
+    return res.status(400).json({
+      erro: "ID do empréstimo inválido"
+    });
+  }
+
+  // Verifica se o empréstimo existe
+  const { data: emprestimo, error: erroEmprestimo } = await supabase
+    .from("emprestimos")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (erroEmprestimo || !emprestimo) {
+    return res.status(404).json({
+      erro: "Empréstimo não encontrado"
+    });
+  }
+
+  // Verifica se o livro existe
+  const { data: livro, error: erroLivro } = await supabase
+    .from("livros")
+    .select("*")
+    .eq("id", emprestimo.id_livro)
+    .single();
+
+  if (erroLivro || !livro) {
+    return res.status(404).json({
+      erro: "Livro associado ao empréstimo não encontrado"
+    });
+  }
+
+  // Atualiza a quantidade do livro
+  const { error: erroAtualizacao } = await supabase
+    .from("livros")
+    .update({
+      quantidade: livro.quantidade + 1
+    })
+    .eq("id", livro.id);
+
+  if (erroAtualizacao) {
+    return res.status(500).json({
+      erro: "Erro ao atualizar estoque do livro"
+    });
+  }
+
+  // Exclui o empréstimo
+  const { error: erroDelete } = await supabase
+    .from("emprestimos")
+    .delete()
+    .eq("id", id);
+
+  if (erroDelete) {
+    return res.status(500).json({
+      erro: erroDelete.message
+    });
+  }
+
+  return res.status(200).json({
+    mensagem: "Empréstimo removido com sucesso"
+  });
+};
 
 
 module.exports = {
   criarEmprestimo,
   listarEmprestimos,
-  atualizarEmprestimo
-};
+  atualizarEmprestimo,
+  deletarEmprestimo
+};   

@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  
+    .conteudo {
+      flex: 1;
+      padding: 2rem;
+    }
+  }
+}
+

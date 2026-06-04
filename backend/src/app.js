@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const usuariosRoutes = require("./routes/usuarios.routes");
 
@@ -8,6 +9,7 @@ const emprestimosRouter = require("./routes/emprestimos.routes");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/livros", rotasDeLivros);
