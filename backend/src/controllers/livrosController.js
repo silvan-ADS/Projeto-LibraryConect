@@ -173,7 +173,7 @@ if (anoPublicacao !== undefined && anoPublicacao !== null) {
 if (ISBN !== undefined && ISBN !== null) {
   const isbnLimpo = ISBN.replace(/-/g, "");
 
-  if (isbnLimpo.Length !== 10 && isbnLimpo.length !== 13) {
+  if (isbnLimpo.length !== 10 && isbnLimpo.length !== 13) {
     return res.status(400).json({
       erro: "Atenção: O ISBN deve conter 10 ou 13 dígitos (sem hífens)!",
     }); 
@@ -225,6 +225,7 @@ if (error) {
 
 res.json({
   mensagem: "Livro atualizado com sucesso!",
+  livro: data,
 });
 };
 
