@@ -1,8 +1,8 @@
 # Sistema de Gerenciamento de Biblioteca
 
 ## Alunos
-- Gleyson Tauan Araújo da Silva - 0184950
-- José Lucas do Nascimento Ribeiro - 0185989
+- Gleyson Tauan Araújo da Silva - 01849450
+- José Lucas do Nascimento Ribeiro - 01859589
 - Lucas Rafael da Silva Alves - 01849525
 - Matheus Lopes Viana Carvalho - 01590039
 - Silvan Guilherme de Barros Souza - 01864557
