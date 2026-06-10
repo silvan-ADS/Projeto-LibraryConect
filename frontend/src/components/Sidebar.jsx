@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FiLogOut } from "react-icons/fi";
 import { FaUsers, FaBook, FaExchangeAlt } from "react-icons/fa";
-import Logo from "../assets/libraryAzul-conectBranco.png"
+import Logo from "../assets/logo.png"
 import "../styles/sidebar.css"
 
 function Sidebar() {
