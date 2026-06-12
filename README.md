@@ -149,7 +149,6 @@ Crie um arquivo `.env` na raiz da pasta backend:
 ```env
 SUPABASE_URL=sua_url_do_supabase
 SUPABASE_KEY=sua_chave_do_supabase
-PORT=3000
 ```
 
 Execute o servidor:
@@ -212,7 +211,6 @@ Responsável pela comunicação com o banco de dados.
 ```env
 SUPABASE_URL=sua_url_do_supabase
 SUPABASE_KEY=sua_chave_do_supabase
-PORT=3000
 ```
 
 As variáveis são acessadas através de:
